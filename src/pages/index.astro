@@ -18,21 +18,36 @@ import data from "../data/data.json";
 				data.map(
 					({ author, title, description, category, hero, time }) => (
 						<Card>
-							<Badge theme="teal" slot="badge">
+							{/* badge */}
+							<Badge
+								theme={
+									category === "Technology"
+										? "teal"
+										: category === "Popular"
+											? "magenta"
+											: "sky-blue"
+								}
+								slot="badge"
+							>
 								<p>{category}</p>
 							</Badge>
+							{/* hero */}
 							<img
 								src={hero}
 								alt={`Image of ${title}`}
 								slot="img"
 							/>
+							{/* title */}
 							<h2 slot="title">{title}</h2>
+							{/* description */}
 							<p>{description}</p>
+
 							<Author
 								class="mt-800"
 								src={author.avatar}
 								name={author.name}
 								time={time}
+								slot="author"
 							/>
 						</Card>
 					)
@@ -46,5 +61,10 @@ import data from "../data/data.json";
 	section {
 		padding: 3rem;
 		border-radius: var(--bdr-radius);
+	}
+
+	.grid--blog-card {
+		gap: var(--spc-800);
+		grid-auto-rows: min-content;
 	}
 </style>

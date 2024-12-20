@@ -15,6 +15,8 @@
 		rgba(23, 33, 63, 35%) 0%,
 		rgba(68, 0, 73, 35%) 100%
 	);
+	// shadows
+	--clr-shadow: 3px 3px 20px  #070b1543;
 	// assignment
 	--clr-text--dark: var(--clr-black-blue);
 	--clr-text--light: var(--clr-white);
