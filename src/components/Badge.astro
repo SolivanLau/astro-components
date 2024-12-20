@@ -1,0 +1,45 @@
+---
+import type {HTMLAttributes} from "astro/types";
+interface Props extends HTMLAttributes<"div">{
+    theme: "teal" | "magenta" | "sky-blue";
+}
+
+const {theme} = Astro.props
+
+const themeClass = `badge--${theme}`
+---
+
+<div class:list={["badge", themeClass]}>
+    <div class="badge__text">
+        <slot />
+    </div>
+</div>
+
+
+<style is:global>
+    .badge{
+        border-radius: var(--bdr-radius--pill);
+        width: fit-content;
+        padding: 0.25rem 0.5rem;
+    }
+
+    /* color variants */
+    .badge--teal{
+        background-color: var(--clr-teal);
+    }
+
+    .badge--magenta{
+        background-color: var(--clr-magenta);
+    }
+
+    .badge--sky-blue{
+        background-color: var(--clr-sky-blue);
+    }
+
+    /* text */
+    .badge__text > *{
+        font-size: var(--fs-200);
+        color: var(--clr-white);
+        text-transform: uppercase;
+    }
+</style>

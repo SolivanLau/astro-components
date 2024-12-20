@@ -1,5 +1,23 @@
-.wrapper{
-    width: min(100% - 2rem, 1100px);
-    margin-inline: auto;
+.wrapper {
+	width: min(100% - 2rem, 1100px);
+	margin-inline: auto;
 }
 
+.flow > * + * {
+	--_flow-spacer: 1em;
+	margin-top: var(--_flow-spacer, 1em);
+}
+
+.background {
+	background-color: var(--clr-white-blue);
+}
+
+.grid {
+	display: grid;
+}
+
+.grid--thirds {
+	@media (min-width: 768px) {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}

@@ -1,9 +1,38 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Author from "../components/Author.astro"
+import Card from "../components/Card.astro";
+import Badge from "../components/Badge.astro";
 ---
 
 <BaseLayout title="Astro Components: Blog Cards">
-	<section class="wrapper">
+	<header class="wrapper">
 		<h1>Astro Components: Blog Cards</h1>
+	</header>
+	<!-- card display -->
+	<section class="wrapper background">
+		<div class="grid grid--thirds">
+
+			<Card > 
+				<Badge theme="teal" slot="badge">
+					<p>Technology</p>
+				</Badge>
+				<h2 slot="title">
+					Why is the Tesla Cybertruck designed the way it is?
+				</h2>
+				<p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quae, fugit?</p>
+				<Author src="/carrie-brewer.jpg" name="Carrie Brewer" time="2 h ago" />
+			</Card>
+
+		</div>
 	</section>
 </BaseLayout>
+
+<style lang="scss">
+
+section{
+	padding: 3rem;
+	border-radius: var(--bdr-radius);
+}
+
+</style>

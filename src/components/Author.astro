@@ -1,0 +1,50 @@
+---
+interface Props {
+    src: string;
+    name: string;
+    time: string;
+    titleTag?: "h2" | "h3" | "h4" | "h5" | "h6" | "p";
+}
+
+const {src, name, time, titleTag = "h2"} = Astro.props
+
+const Title = titleTag;
+---
+
+<div class="author">
+    <!-- img -->
+    <img class="author__img" src={src} alt={`Avatar of ${name}.`} width="45" height="45">
+    <!-- text -->
+    <div class="author__text flow">
+        <Title class="author__title">{name}</Title>
+        <p class="author__time">{time}</p>
+    </div>
+</div>
+
+
+<style is:global lang="scss">
+    .author{
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    /* img */
+    .author__img {
+        border-radius: var(--bdr-radius--circle);
+    }
+
+    /* text */
+
+    .author__text > * + * {
+        --_flow-spacer: 0.3em;
+    }
+    .author__title{
+        font-size: var(--fs-400);
+        font-weight: 700;
+    }
+
+    .author__time{
+        font-size: var(--fs-300);
+        color: var(--clr-text--muted);
+    }
+</style>
