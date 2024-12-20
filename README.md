@@ -1,34 +1,49 @@
-# Astro Starter Kit: Basics
+# Astro Components: Blog Cards
+
+## 📝 Project Overview
+
+This is a simple recreation project based on a [blog card design](https://www.uidesigndaily.com/posts/sketch-blog-cards-post-article-thumbnail-day-997) from [UI Design Daily](https://www.uidesigndaily.com).
+
+**The goal:** Utilize Astro's UI approach to...
+
+- create reusable layouts.
+- create modular components to form larger components.
+- map data to components.
+- style components and layouts with ease.
+
+**Tech Stack:** A bare bones techstack:
+
+- Astro
+- Scss for styling
+- javascript and a little typescript for static generation
+
+## 🍃 Quickstart
+
+To get started, clone the repository and run the following command in the terminal to see the site in action:
 
 ```sh
-npm create astro@latest -- --template basics
+pnpm dev
 ```
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
 
 ## 🚀 Project Structure
 
-Inside of your Astro project, you'll see the following folders and files:
+This project has the following folder and file structure:
 
 ```text
 /
 ├── public/
 │   └── favicon.svg
 ├── src/
+│   ├── components/
+│   ├── data/
 │   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
+│   ├── pages/
 │       └── index.astro
+│   ├── styles/
+│       ├── base/
+│       └── styles.scss
 └── package.json
 ```
-
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
 
 ## 🧞 Commands
 
@@ -43,6 +58,80 @@ All commands are run from the root of the project, from a terminal:
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `npm run astro -- --help` | Get help using the Astro CLI                     |
 
-## 👀 Want to learn more?
+## 👀 Learnings?
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+### Slots
+
+Slots have been powerful to insert content into components, often allowing for reusability. We can start with an **unnamed slot**, which is where we can place **default** content into the component.
+
+```jsx
+<div class="card">
+	<slot />
+</div>
+```
+
+```jsx
+<Card>
+	<h5>Astro Slots</h5>
+</Card>
+```
+
+Astro slots have more complexity and functionality to allow for variations of a component.
+
+#### slots.has()
+
+**Documentation:** [Astro Slots](https://docs.astro.build/en/reference/astro-syntax/#astroslots)
+
+A simple helper to check if a slot exists. This is super helpful to conditionally render wrapping content around the slot itself.
+
+```jsx
+<div class="card">
+	{Astro.slots.has("title") && (
+		<div class="card__title">
+			<slot name="title" />
+		</div>
+	)}
+	<div class="card__content">
+		<slot />
+	</div>
+</div>
+```
+
+```jsx
+// title is slotted in with a specific position and wrapper mark up
+<Card>
+	<h2 slot="title">My Title </h2>
+	<p>lorem ipsum</p>
+</Card>
+```
+
+### Types and Components
+
+**Documentation:** [Built-in HTML attributes](https://docs.astro.build/en/guides/typescript/#built-in-html-attributes)
+
+With typescript, you may notice a lot of components require you to give additional prop types to allow for basic functionality. Take a look:
+
+```typescript
+// Props for a link component
+interface Props {
+	href: string;
+	isExternal?: boolean; // conditionally render target and rel attr based on boolean
+	class?: string; // allow class attribute
+	[key: string]: any; // allow any additional attributes not mentioned
+}
+```
+
+Astro uses a **strict** type system and requires explicitly defined types for each component prop. Although technically correct, it's not ideal to add class and key prop types to each component.
+
+We can leverage Built-in HTML attributes for DRY types. Import `HTMLAttributes` from the `astro/types` and extend personal props from a specific element.
+
+```typescript
+import type { HTMLAttributes } from "astro/types";
+// Props for a link component
+interface Props extends HTMLAttributes<"a"> {
+	isExternal?: boolean; // conditionally render target and rel attr based on boolean
+	// href, class, and key are already defined!
+}
+```
+
+Notice how we omit `href` in addition to `class` and `key` from the component's props? That's because we are extending from an ordinary HTML `<a>` element. We only include custom properties at that point.
