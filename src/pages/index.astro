@@ -1,38 +1,50 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Author from "../components/Author.astro"
+import Author from "../components/Author.astro";
 import Card from "../components/Card.astro";
 import Badge from "../components/Badge.astro";
+
+import data from "../data/data.json";
 ---
 
 <BaseLayout title="Astro Components: Blog Cards">
-	<header class="wrapper">
+	<header class="wrapper mt-500 mb-500">
 		<h1>Astro Components: Blog Cards</h1>
 	</header>
 	<!-- card display -->
-	<section class="wrapper background">
-		<div class="grid grid--thirds">
-
-			<Card > 
-				<Badge theme="teal" slot="badge">
-					<p>Technology</p>
-				</Badge>
-				<h2 slot="title">
-					Why is the Tesla Cybertruck designed the way it is?
-				</h2>
-				<p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quae, fugit?</p>
-				<Author src="/carrie-brewer.jpg" name="Carrie Brewer" time="2 h ago" />
-			</Card>
-
+	<section class="wrapper background mt-500">
+		<div class="grid grid--thirds grid--blog-card">
+			{
+				data.map(
+					({ author, title, description, category, hero, time }) => (
+						<Card>
+							<Badge theme="teal" slot="badge">
+								<p>{category}</p>
+							</Badge>
+							<img
+								src={hero}
+								alt={`Image of ${title}`}
+								slot="img"
+							/>
+							<h2 slot="title">{title}</h2>
+							<p>{description}</p>
+							<Author
+								class="mt-800"
+								src={author.avatar}
+								name={author.name}
+								time={time}
+							/>
+						</Card>
+					)
+				)
+			}
 		</div>
 	</section>
 </BaseLayout>
 
 <style lang="scss">
-
-section{
-	padding: 3rem;
-	border-radius: var(--bdr-radius);
-}
-
+	section {
+		padding: 3rem;
+		border-radius: var(--bdr-radius);
+	}
 </style>

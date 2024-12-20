@@ -1,42 +1,75 @@
 ---
+import type { HTMLAttributes } from "astro/types";
+type Props = HTMLAttributes<"div">;
 
+const { class: className } = Astro.props;
 ---
-<div class="card">
-    <!-- img -->
-    {Astro.slots.has("img") && (
-        <div class="card__img">
-            <slot name="img"/>
-        </div>
-    )}
 
-    <!-- content -->
-    <div class="card__content flow">
-        <slot name="badge"/>
-        {Astro.slots.has("title") && (
-            <div class="card__title">
-                <slot name="title" />
-            </div>
-        )}
-        <slot />
-    </div>
+<div class:list={["card", className]}>
+	<!-- img -->
+	{
+		Astro.slots.has("img") && (
+			<div class="card__img">
+				<slot name="img" />
+			</div>
+		)
+	}
+
+	<!-- content -->
+	<div class="card__content flow">
+		<!-- optional badge -->
+		<slot name="badge" />
+		<!-- optional title -->
+		{
+			Astro.slots.has("title") && (
+				<div class="card__title">
+					<slot name="title" />
+				</div>
+			)
+		}
+		<!-- all content -->
+		<slot />
+	</div>
 </div>
 
-
-
 <style is:global lang="scss">
-    .card{
-        border-radius: var(--bdr-radius);
-        background-color: var(--clr-white);
-    }
+	.card {
+		border-radius: var(--bdr-radius);
+		background-color: var(--clr-white);
+	}
 
-    .card__content{
-        --_padding: 2rem;
-        padding: var(--_padding);
-        color: var(--clr-text-dark);
-    }
+	.card__img {
+		--_bdr-radius: var(--bdr-radius) var(--bdr-radius) 0 0;
+		position: relative;
+		// slotted img
+		img {
+			width: 100%;
+			aspect-ratio: 3/2;
+			object-fit: cover;
+			border-radius: var(--_bdr-radius);
+		}
 
-    .card__title, .card__title > *{
-        --_flow-spacer: 0.5rem;
-        font-size: var(--fs-500);
-    }
+		// gradient overlay
+		&::before {
+			content: " ";
+			position: absolute;
+			inset: 0;
+			background: var(--clr-grad-primary);
+			border-radius: var(--_bdr-radius);
+		}
+	}
+
+	.card__content {
+		--_padding: 2rem;
+		padding: var(--_padding);
+		color: var(--clr-text-dark);
+	}
+
+	.card__title {
+		--_flow-spacer: 0.5rem;
+	}
+
+	.card__title > * {
+		font-size: var(--fs-500);
+	}
 </style>
